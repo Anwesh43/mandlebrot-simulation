@@ -15,11 +15,23 @@ class Complex {
     static add(c1,c2) {
         return new Complex(c1.re+c2.re,c1.im+c2.im)
     }
+    static map(a,b,w,h) {
+        const diff = b-a
+        const complexNumbers = []
+        for(var j=0;j<h;j++) {
+            for(var i=0;i<w;i++) {
+                const re = i*(diff)/w,im = j*(diff)/h
+                complexNumbers.push(new Complex(re,im))
+            }
+        }
+        return complexNumbers
+    }
 }
 class MandrebotSet {
     constructor(n,lastVal) {
         this.n = n
         this.lastVal = lastVal
+        this.pixels = []
     }
     calculateMandrebot(c) {
         var i = 0
@@ -32,7 +44,8 @@ class MandrebotSet {
             currComplexNum = Complex.add(currComplexNum,sq)
             i++
         }
-        return Math.floor(255*(i)/100)
+        const pixel = Math.floor((255*i)/100)
+        this.pixels.push(pixel)
     }
 }
 const createCanvas = (w,h) => {
@@ -46,5 +59,23 @@ const getPixels = () => {
     return imData.data
 }
 const setPixels = () => {
-    window.context.setImageData(window.imData,0,0)
+    context.setImageData(imData,0,0)
 }
+const setBackground = (color) => {
+    context.fillStyle = color
+    context.fillRect(0,0,canvas.width,canvas.height)
+}
+createCanvas(400,400)
+const complexNums = Complex.map(-2,2,400,400)
+const pixels = getPixels()
+const mandreBotSet = new MandrebotSet(100,16)
+complexNums.forEach((complexNum)=>{
+    mandreBotSet.calculateMandrebot(complexNum)
+})
+mandreBotSet.pixels.forEach((pixel,index)=>{
+    const i = 4*index
+    pixels[i] = pixel
+    pixels[i+1] = pixel
+    pixels[i+2] = pixel
+})
+setPixels()
