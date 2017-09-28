@@ -27,7 +27,7 @@ class Complex {
         return complexNumbers
     }
 }
-class MandrebotSet {
+class MandlebrotSet {
     constructor(n,lastVal) {
         this.n = n
         this.lastVal = lastVal
@@ -71,11 +71,11 @@ createCanvas(400,400)
 setBackground('#212121')
 const complexNums = Complex.map(-2.5,2.5,400,400)
 const pixels = getPixels()
-const mandreBotSet = new MandrebotSet(100,2)
+const mandlebrotSet = new MandlebrotSet(100,2)
 complexNums.forEach((complexNum)=>{
-    mandreBotSet.calculateMandrebot(complexNum)
+    mandlebrotSet.calculateMandrebot(complexNum)
 })
-mandreBotSet.pixels.forEach((pixel,index)=>{
+mandlebrotSet.pixels.forEach((pixel,index)=>{
     const i = 4*index
     pixels[i] = pixel
     pixels[i+1] = pixel
